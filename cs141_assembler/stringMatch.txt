@@ -1,0 +1,28 @@
+push_immediate 0
+set  r1                //bit index
+push_immediate 0
+set  r2                //number of matches in the array of strings
+//push_immediate 32
+push_immediate 0
+set r3                 // i = 0
+set_memory_ptr 6       // 4-bit string
+set_memory_ptr 32       //arr[0]
+set_memory_ptr 64      //array length 
+push r3
+loop:
+pop 2
+contains next 
+inc r2
+next:
+set_memory_ptr 6
+set_memory_ptr 32
+inc r0
+set_memory_ptr 64  //array length
+inc r3
+push r3
+blt loop
+
+
+set_memory_ptr 7
+store r4
+

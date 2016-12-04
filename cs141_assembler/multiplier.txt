@@ -1,0 +1,94 @@
+push_immediate 0
+set r1 // i = 0
+set r2 // lowSumAB = 0
+set r3 // upperSumAB = 0
+set r4 // sumLowerLowerABC = 0
+set r5 // sumUpperLowerABC = 0
+set r6 // sumUpperABC = 0
+
+
+set_memory_ptr 1 // push A onto stack
+set_memory_ptr 2 // push B onto stack
+// ----------------------------------------------------------------------------------------------------------------
+A*B: // B is on the top of the stack, with A right below it
+
+
+and_and_shift r1 // sum = A[i] & B; push sum >> 8-1, push sum << i
+push r2 
+add r2// sumLowerAB = sum << i + r2; pop sum<<i and r2 and set overflow
+add_overflow r3// if sumLower += results in overflow, add it and sum >> 8-i to upper sum, pop
+
+
+inc r1 // i++
+// check for branch
+push r1
+push_immediate 7
+// state of the stack: 7, i, B, A, 0
+blt A*B // branch to beginning of loop unless i > 7 (i == 8)
+// -------------------------------------------------------------------------------------------------------------------
+
+
+push 0
+set r1 // i = 0
+set_memory_ptr 3 // push C onto stack
+push r2 // push the lower bits of A*B onto stack
+
+
+// current state of the stack: lowerAB, C, 0
+// there are more, but we'll forget about them for now because there are no requirements for memory leaks 
+// -----------------------------------------------------------------------------------------------------------------
+lowerAB*C: // same routine as before
+
+
+and_and_shift r1 // sum = lowerAB[i] & C; push sum >> 8-1, push sum << i
+push r4
+add r4// sumLowerLowerABC = sum << i + r4; pop sum<<i and r4 and set overflow
+add_overflow r5 // if sumUpLowABC += results in overflow, add it and sum >> 8-i to upper sum, and pops
+
+
+inc r1 // i++
+// check for branch
+push r1
+push_immediate 7
+// state of the stack: 7, i, C, lowerAB, 0
+blt lowerAB*C // branch to beginning of loop unless i > 7 (i == 8)
+// --------------------------------------------------------------------------------------------------------------------
+push 0
+set r1 // i = 0
+set_memory_ptr 3 // push C back onto stack instead of popping; fewer instructions and less chance 
+//for mistakes
+push r3 // push the upper bits of A*B onto stack
+
+
+// current state of the stack: upperAB, C, 0
+// -------------------------------------------------------------------------------------------------------------------------
+upperAB*C: // same routine as before
+
+
+and_and_shift r1 // sum = upperAB[i] & C; push sum >> 8-1, push sum << i
+push r6
+add r6// sumLowerLowerABC = sum << i + r6; pop sum<<i and set overflow
+// don't care about the rest because it's overflow
+
+
+inc r1 // i++
+// check for branch
+push r1
+push_immediate 7
+// state of the stack: 7, i, B, A, 0
+blt upperAB*C // branch to beginning of loop unless i > 7 (i == 8)
+
+
+// r7 will be the upper bits in location 4
+push r5
+push r6
+add r7 // r7 = r5 + r6, or upper + upperLower
+
+
+// r4 will remain the lower bits
+
+
+set_memory_ptr 4 // move r0 to 4
+store r7 // stores r7 into [r0]
+set_memory_ptr 5
+store r4 // stores r4 into [r0]

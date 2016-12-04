@@ -1,0 +1,63 @@
+set_memory_ptr 255
+set r1   //r1 = closest 
+push_immediate 0
+set  r2  //r2 = i
+push_immediate 1
+set r3  //r3 = 1
+push_immediate 19
+set r4  //r4 = 19 = arr.length - 1
+push_immediate 20
+set r5  //r5 = 20 =  arr.length 
+set_memory_ptr 128
+set r6 //r6 = a[0]
+outerloop:
+push r3
+push r2
+//branch if i < 1, so that if i = 0 the memory pointer is not incremented since it is already at 128 and //a[0] is at 128 
+blt incj            
+
+
+//set the memory pointer to the right location by incrementing the pointer until it reaches index i so //that it is at a[i]
+set_memory_ptr 128    //reset memory pointer location to a[0]
+push_immediate 0
+set r7            // r7 = 0 (counter)
+incarray:
+inc r0            //increment memory location to the appropriate location by looping
+set r6             //until r7 = r2(counter = i)
+inc r7
+push r2
+push r7
+blt incarray        //branch if r7 < r2 (counter < i )
+incj:    
+push r2            
+push r3            
+add  r8            //r8 = i + 1 = j
+
+
+//loop through the array subtracting a[j] from a[i] and if it is less than the value stored in r1 (closest) //set r1 to this difference, continue looping while j < array length
+innerloop: 
+push r6            //r6 = a[i]
+inc r0            //r0 = a[j] 
+sub r9            //r9 = a[j] - a[i]        
+abs r9            //r9 = abs(a[j] - a[i])
+push r1            //r1 = closest
+blt endinner        //branch if r1 < r9 (closest < abs(a[j] - a[i]))
+push r9    
+set r1            //set r1 to r9 (closest = abs(a[j] - a[i])
+endinner: 
+push r5    
+inc r8            //j++
+push r8
+blt innerloop        //branch if r8 < r4 (j < 20)
+
+
+//increment i and continue looping through the array if it is less than array length - 1 since the last //element in the array will already have been compared to the rest of the elements
+push r4
+inc r2            //i++
+push r2
+blt outerloop        //branch if r2 < r4 ( i < 19)
+
+
+//put the calculated closest distance into memory location 127
+set_memory_ptr 127    //sets memory pointer to 127
+store r1            //stores r1 to location 127 (r1 = closest)    
