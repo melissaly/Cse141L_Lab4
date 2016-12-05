@@ -2,17 +2,18 @@ module InstructionRom( // in: pc, out: instr
     input [3:0] pc,
     output logic[8:0] instr);
 
-    logic [9:0] ROM_core[2**8]; // [9x255]
+    logic [8:0] ROM_core[2**8]; // [8x255]
 
-    initial
+    //initial
 
     /* read assembled machine code */
-    $readmemb("machine_code",ROM_core);
+	 // commented until this file is produced
+    // $readmemb("machine_code",ROM_core);
 	 
-    always_comb
+    always_comb begin
         // retrieve instruction given address
         instr = ROM_core[pc];  
-    endcase
+    end
 endmodule
 
 /* eldon's tests

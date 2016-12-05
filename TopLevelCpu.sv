@@ -46,8 +46,8 @@ module TopLevelCpu(
 	);
 
 	InstructionRom ir(
-		.inst_address(next_pc),
-		.inst_out(next_instr)
+		.pc(next_pc),
+		.instr(next_instr)
 	);
 
 	Control control_gen(

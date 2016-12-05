@@ -14,7 +14,7 @@ module alu_tb;
 	bit branch_sig;
 
 	// Instantiate the Unit Under Test (UUT)
-	alu uut(
+	Alu uut(
 	  .clk(clk),
 	  .op(op), 
 	  .reg_val(reg_val), 
