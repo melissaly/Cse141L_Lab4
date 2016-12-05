@@ -19,7 +19,7 @@ module InstructionRom( // in: pc, out: instr
 		2 : inst_out = 9'b001000001;  // push rs onto the stack
 		
 		// opcode = 3 add, rt = 1, target = 1
-        	3 : inst_out = 9'b001100001;  // add the top two values on the stack and store in reg1
+      3 : inst_out = 9'b001100001;  // add the top two values on the stack and store in reg1
 
 		// opcode = 4 set, rt = 1
 		4 : inst_out = 9'b010000001;  // set reg1 to the top values on the stack

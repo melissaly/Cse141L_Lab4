@@ -69,7 +69,7 @@ module TopLevelCpu(
 		.addr(next_instr[4:0]),
 		.data_in(reg_mux),
 		.data_out(reg_reg),
-		.regZero(r0_reg)
+		.reg_zero(r0_reg)
 	);
 
 	Alu alu(
@@ -94,10 +94,10 @@ module TopLevelCpu(
 	
 	DataRam memory(
 		.clk(clk),
-		.DataAddress(address_mux),
-		.WriteMem(1'b0),
-		.DataIn(reg_reg),
-		.DataOut(top_mem)
+		.data_address(address_mux),
+		.write_mem(WRITE_EN),
+		.data_in(reg_reg),
+		.data_out(top_mem)
 	);
 	
 

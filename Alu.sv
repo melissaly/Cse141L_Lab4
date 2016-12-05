@@ -42,7 +42,7 @@ module Alu (
 		else branch_sig0 = 1'b0;
 		
 		/* inc */
-		reg_out1 = reg_val + 1;
+		reg_out1 = reg_val + 8'b00000001;
 		
 		/* and and shift */
 		temp_shift = (stack1 >> reg_val) & stack0;
@@ -71,18 +71,18 @@ module Alu (
 	// final muxes
 	
 	assign reg_out =    (op == ADD) ? reg_out0 :
-			    (op == INC) ? reg_out1 :
-			    (op == AOV) ? reg_out2 :
-			    (op == SUB) ? reg_out3 :
-			    (op == ABS) ? reg_out4 : 
-					  8'bx; // don't care
+			              (op == INC) ? reg_out1 :
+			              (op == AOV) ? reg_out2 :
+			              (op == SUB) ? reg_out3 :
+			              (op == ABS) ? reg_out4 : 
+					         8'bx; // don't care
 	
 	assign stack0_out = (op == AAS) ? stack0_out0 :
-			    (op == ABS) ? stack0_out1 : 
-					  8'bx;
+			              (op == ABS) ? stack0_out1 : 
+					         8'bx;
 	assign branch_sig = (op == BLT) ? branch_sig0 :
-			    (op == CON) ? branch_sig1 : 
-					  8'bx;
+			              (op == CON) ? branch_sig1 : 
+					         1'bx;
 	assign stack1_out = stack1_out0;
 
 endmodule 
