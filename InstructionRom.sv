@@ -2,9 +2,39 @@
 module InstructionRom( // in: pc, out: instr
     input [3:0] inst_address,
     output logic[8:0] inst_out);
+
+logic [9:0] ROM_core[2**8]; // [0:255]
+
+initial
+$readmemb("machine_code",ROM_core);
 	 
+// Instructions have [4bit opcode][3bit rs or rt][3bit rt, immediate, or branch target]
+always_comb
+    InstOut = ROM_core[InstAddress];  
+case (InstAddress)
+// opcode = 0 lhw, rs = 0, rt = 1
+	  0 : InstOut = 10'b0000000001;  // load from address at reg 0 to reg 1  
+// opcode = 1 addi, rs/rt = 1, immediate = 1
+     
+	  1 : InstOut = 10'b0001001001;  // addi reg 1 and 1
+// replace instruction 1 with the following to produce an infinite loop (shows branch working)
+//1 : InstOut = 10'b0001001000;  // addi reg 1 and 0
+		
+// opcode = 2 shw, rs = 0, rt = 1
+	  2 : InstOut = 10'b0010000001;  // sw reg 1 to address in reg 0
+		
+// opcode = 3 beqz, rs = 1, target = 1
+      3 : InstOut = 10'b0011001001;  // beqz reg1 to absolute address 1
+		
+// opcode = 15 halt
+	  4 : InstOut = 10'b1111111111;  // halt
+	  default : InstOut = 10'b0000000000;
+    endcase
+
+// wtf is this idek	 
+/* 
 	 // Instructions have [4bit opcode][5bit rs, or rt, or immediate, or branch target]
-	 
+	 $readmemh("dataram_init.list", my_memory);
 	 always_comb 
 		case (inst_address)
 		// opcode = 0 set memory ptr, immediate = 1
@@ -19,7 +49,7 @@ module InstructionRom( // in: pc, out: instr
 		2 : inst_out = 9'b001000001;  // push rs onto the stack
 		
 		// opcode = 3 add, rt = 1, target = 1
-      3 : inst_out = 9'b001100001;  // add the top two values on the stack and store in reg1
+      		3 : inst_out = 9'b001100001;  // add the top two values on the stack and store in reg1
 
 		// opcode = 4 set, rt = 1
 		4 : inst_out = 9'b010000001;  // set reg1 to the top values on the stack
@@ -55,6 +85,6 @@ module InstructionRom( // in: pc, out: instr
 		//15 : inst_out = 9'b1110111111;  // halt
 		default : inst_out = 9'b111111111;
     endcase
-
+*/
 endmodule 
 
