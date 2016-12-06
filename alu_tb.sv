@@ -1,4 +1,4 @@
-module alu_tb;
+module Testbench;
 
 	// DUT Input Drivers
 	bit clk;
@@ -93,8 +93,6 @@ module alu_tb;
 
 
 	end
-
-
 always begin
   #10ns clk = ~clk;
 end    

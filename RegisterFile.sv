@@ -1,14 +1,14 @@
 
-module RegisterFile #(parameter W=8, D=4) ( // in: clk, write_en, addr, data_in; out: data_out, regZero
-	input clk, write_en,
-	input [D-1:0] addr,
-	input [W-1:0] data_in,
-	output [W-1:0] data_out,
-	output logic [W-1:0] reg_zero
+module RegisterFile ( // in: clk, write_en, addr, data_in; out: data_out, regZero
+	input                clk, write_en,
+	input        [7:0] addr,
+	input        [3:0] data_in,
+	output       [3:0] data_out,
+	output logic [3:0] reg_zero
 	);
 
 	//8 bits wide and 16 registers
-	logic [W-1:0] registers[2**D];
+	logic [3:0] registers[2**8];
 	
 	
 	//combinational reads
@@ -17,8 +17,9 @@ module RegisterFile #(parameter W=8, D=4) ( // in: clk, write_en, addr, data_in;
 	
 	
 	//sequential (clocked) writes
-	always_ff @ (posedge clk)
-		if(write_en)
-			registers[addr] <= data_in; 
+	always_ff @ (posedge clk) begin
+                if(write_en)
+                	registers[addr] <= data_in; 
+        end
 
 endmodule 
