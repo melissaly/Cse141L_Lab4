@@ -24,16 +24,7 @@ always_ff @ (posedge clk) begin
 
         temp_top_val = stacks[ptr_top];
         temp_pen_val = stacks[ptr_pen];
-/*
-        stacks[0] <= push_pen;
-        //penVal <= push_pen;
-        penVal <= stacks[0];
-        stack_ptr <= stack_ptr + 1;
-        stacks[1] <= push_top;
-        topVal <= stacks[1];
-        stack_ptr <= stack_ptr + 1;
 
-*/
     end
 
     // case: push top only
@@ -46,12 +37,7 @@ always_ff @ (posedge clk) begin
 
         temp_top_val = stacks[ptr_top];
         temp_pen_val = stacks[ptr_pen];        
-/*
-        stacks[stack_ptr] <= push_top;
-        topVal <= push_top;
-        stack_ptr <= stack_ptr + 1;
-        //topVal <= stack_ptr;
-*/
+
     end
 
     // case: pop both
@@ -61,12 +47,7 @@ always_ff @ (posedge clk) begin
 
         ptr_pen = ptr_pen - 2;
         ptr_top = ptr_top - 2;
-/*
-        stack_ptr <= stack_ptr - 2;
-        topVal <= stacks[1];
-        stack_ptr <= stack_ptr - 1;
-        penVal <= stacks[0];
-*/
+
     end
 
     // case: pop top only
@@ -76,10 +57,6 @@ always_ff @ (posedge clk) begin
 
         ptr_pen = ptr_pen - 2;
         ptr_top = ptr_top - 2;
-/*
-        stack_ptr <= stack_ptr - 2;
-        topVal <= stacks[stack_ptr];
-*/
     end
 
 end
