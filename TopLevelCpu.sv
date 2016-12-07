@@ -3,7 +3,6 @@
 module TopLevelCpu(
         input       start,
         input       clk,
-        input [1:0] problem_number,
         output      halt
         );
 
@@ -43,13 +42,12 @@ module TopLevelCpu(
         .start(start),
         .abs_jump_en(BRANCH),
         .halt(halt),
-        .abs_jump(jump_adr),
+        .abs_jump(next_instr[4:0]),
         .p_ct(next_pc)
         );
 
         InstructionRom ir(
         .pc(next_pc),
-        .problem_number(problem_number),
         .instr(next_instr)
         );
 

@@ -15,8 +15,19 @@ module ProgramCounter ( // in: clk, start, abs_jump_en, halt, abs_jump, out: p_c
             p_ct <= 0;
         else
             case(abs_jump_en)
-                1'b0:    p_ct <= p_ct + 8'b00000001;
-                1'b1:    p_ct <= abs_jump;
+                1'b0:    begin 
+                         p_ct <= p_ct + 8'b00000001;
+                         end
+
+                1'b1:    begin 
+                         // FIX THIS
+                         // FIX THIS
+                         // FIX THIS
+                         // FIX THIS
+                         // FIX THIS
+                         p_ct <= abs_jump;
+                         end
+
                 default: ;
             endcase
     end
