@@ -1,3 +1,4 @@
 Create all the muxes
-Find absolute jump addresses
+Find absolute jump addresses (associate labels with numbers)
+Map memory to their hash keys
 Run program
