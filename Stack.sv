@@ -2,6 +2,7 @@ module Stack(
     input bit clk, push_top, push_pen, pop_top, pop_pen,
     input [7:0] push_top_val,
     input [7:0] push_pen_val,
+    input [4:0] r0,
     output logic [7:0] top_val,
     output logic [7:0] pen_val
     );
@@ -11,11 +12,13 @@ int ptr_top = -1;
 int ptr_pen = -2;
 logic [7:0] temp_top_val;
 logic [7:0] temp_pen_val;
+bit temp_push_en;
 
 always_ff @ (posedge clk) begin
     
+    temp_push_en = (r0 == 5'b00000) ? 1 : push_top;
     // case: push both
-    if(push_top && push_pen) begin
+    if(temp_push_en && push_pen) begin
         ptr_pen <= ptr_pen + 2;
         ptr_top <= ptr_top + 2;
 
@@ -28,7 +31,7 @@ always_ff @ (posedge clk) begin
     end
 
     // case: push top only
-    if(push_top && !push_pen) begin
+    if(temp_push_en && !push_pen) begin
         ptr_pen <= ptr_pen + 1;
         ptr_top <= ptr_top + 1;
 

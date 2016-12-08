@@ -24,7 +24,7 @@ module TopLevelCpu(
         // module connections
         // description_origin
         wire [7:0] reg_reg;
-        wire [7:0] reg_instr;
+        wire [4:0] reg_instr;
         wire [7:0] top_stack;
         wire [7:0] pen_stack;
         wire [7:0] reg_alu;
@@ -63,17 +63,14 @@ module TopLevelCpu(
                               8'bx;
 
         // branch and-gate
-        assign BRANCH = BRANCH && branch_alu;
- 
-        // push if r0 and inc
-        assign PUSH_TOP = (next_instr[8:5] == 8 && next_instr[4:0] == 0) ? 1 :
-                           PUSH_TOP;
+        bit temp_branch;
+        assign temp_branch = BRANCH && branch_alu;
         
         
         ProgramCounter pc(
         .clk(clk),
         .start(start),
-        .abs_jump_en(BRANCH),
+        .abs_jump_en(temp_branch),
         .halt(halt),
         .abs_jump(next_instr[4:0]),
         .p_ct(next_pc)
@@ -86,7 +83,7 @@ module TopLevelCpu(
 
         Control control_gen(
         .OPCODE(next_instr[8:5]),
-        .ALUOP(ALUOP),
+        .ALUOP(ALUOP), 
         .BRANCH(BRANCH),
 	.PUSH_SEL(PUSH_SEL),
         .PUSH_TOP(PUSH_TOP),
@@ -130,6 +127,7 @@ module TopLevelCpu(
 	.pop_pen(POP_PEN),
         .push_top_val(top_mux),
         .push_pen_val(pen_alu),
+        .r0(next_instr[4:0]),
         .top_val(top_stack),
         .pen_val(pen_stack)
         );

@@ -21,38 +21,39 @@ module ProgramCounter ( // in: clk, start, abs_jump_en, halt, abs_jump, out: p_c
                 1'b1:    begin 
                          	case(abs_jump)
 					5'b00000: begin
-						  p_ct <= 8'b00001001					
+						  p_ct <= 8'b00001001;					
 						  end
 					5'b00001: begin
-						  p_ct <= 8'b00010110
+						  p_ct <= 8'b00010110;
 						  end
 					5'b00010: begin
-						  p_ct <= 8'b00100011
+						  p_ct <= 8'b00100011;
 						  end
 					5'b00011: begin
-						  p_ct <= 8'b00001010
+						  p_ct <= 8'b00001010;
 						  end
 					5'b00100: begin
-						  p_ct <= 8'b00001110
+						  p_ct <= 8'b00001110;
 						  end
 					5'b00101: begin
-						  p_ct <= 8'b00011010
+						  p_ct <= 8'b00011010;
 						  end
 					5'b00110: begin
-						  p_ct <= 8'b00010011
+						  p_ct <= 8'b00010011;
 						  end
 					5'b00111: begin
-						  p_ct <= 8'b00100111
+						  p_ct <= 8'b00100111;
 						  end
 					5'b01000: begin
-						  p_ct <= 8'b00011110
+						  p_ct <= 8'b00011110;
 						  end
 					5'b01001: begin
-						  p_ct <= 8'b00001100
+						  p_ct <= 8'b00001100;
 						  end
+                         	endcase
                          end
 
-                default: ;
+            default: ;
             endcase
     end
 endmodule 
