@@ -1,4 +1,4 @@
-module ROM(
+module MemoryRom(
 	input [4:0] immediate,
 	output logic [7:0] address
 	);
