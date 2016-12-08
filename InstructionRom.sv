@@ -10,7 +10,8 @@ module InstructionRom( // in: pc, out: instr
 
         /* read assembled machine code */
         $readmemb("lab17.txt",ROM_core);
-
+        //$readmemb("lab18.txt",ROM_core);
+        //$readmemb("lab19.txt",ROM_core);
     always_comb begin
         // retrieve instruction given address
         instr = ROM_core[pc];  
