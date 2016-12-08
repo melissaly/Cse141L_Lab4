@@ -1,4 +1,7 @@
 Create all the muxes
-Find absolute jump addresses (associate labels with numbers)
+    r0 for instruction 0
+    reg file write data 
+    memory address selector
+    stack top
 Map memory to their hash keys
 Run program
