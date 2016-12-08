@@ -1,15 +1,16 @@
 module Alu (
-        input clk,
-        input [2:0] op,
-        input [7:0] reg_val,
-        input [7:0] stack0,
-        input [7:0] stack1,
+        input        clk,
+        input  [2:0] op,
+        input  [7:0] reg_val,
+        input  [7:0] stack0,
+        input  [7:0] stack1,
         output [7:0] reg_out,
         output [7:0] stack0_out,
         output [7:0] stack1_out,
-        output bit branch_sig
+        output bit   branch_sig
         );
-        import definitions::*;        // alu ops
+        // moved definitions to this file
+        //import definitions::*;        // alu ops
         bit overflow; // from and for adding
 
         // temp registers
@@ -32,7 +33,6 @@ module Alu (
         
         
         /* definitions */
-
         typedef enum logic[2:0] {
                 ADD = 3'b000, 
                 BLT = 3'b001, 
