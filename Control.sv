@@ -10,26 +10,30 @@ module Control(
         output logic [1:0] WRITE_REG,
         output logic       WRITE_EN,
         output logic       WRITE_MEM,
+	output logic	   MEM_ADDR_SEL,
+        output logic       REG_ZERO,
         output logic       HALT
         );
 
         always_comb begin
         case(OPCODE)
-        0:      begin
+        0:      begin // set memory ptr
                 ALUOP = 0;
                 BRANCH = 0;
-                PUSH_SEL = 0;
+                PUSH_SEL = 0; // comes from memory
                 PUSH_TOP = 1;
                 PUSH_PEN = 0;
                 POP_TOP = 0;
                 POP_PEN = 0;
-                WRITE_REG = 0;
-                WRITE_EN = 0;
+                WRITE_REG = 0; // comes from rom
+                WRITE_EN = 1;
                 WRITE_MEM = 0;
+                MEM_ADDR_SEL = 0; // comes from rom
+                REG_ZERO = 1;
                 HALT = 0;
         end
 
-        1:      begin
+        1:      begin // store
                 ALUOP = 0;
                 BRANCH = 0;
                 PUSH_SEL = 0;
@@ -40,10 +44,12 @@ module Control(
                 WRITE_REG = 0;
                 WRITE_EN = 0;
                 WRITE_MEM = 1;
+                MEM_ADDR_SEL = 1; // comes from r0
+                REG_ZERO = 0;
                 HALT = 0;
         end
 
-        2:      begin
+        2:      begin // push
                 ALUOP = 0;
                 BRANCH = 0;
                 PUSH_SEL = 2;
@@ -54,11 +60,13 @@ module Control(
                 WRITE_REG = 0;
                 WRITE_EN = 0;
                 WRITE_MEM = 0;
+                MEM_ADDR_SEL = 1'bx;
+                REG_ZERO = 0;
                 HALT = 0;
         end
 
 
-        3:      begin
+        3:      begin // add
                 ALUOP = 0;
                 BRANCH = 0;
                 PUSH_SEL = 0;
@@ -69,10 +77,12 @@ module Control(
                 WRITE_REG = 2;
                 WRITE_EN = 1;
                 WRITE_MEM = 0;
+                MEM_ADDR_SEL = 1'bx;
+                REG_ZERO = 0;
                 HALT = 0;
         end
 
-        4:      begin
+        4:      begin // set
                 ALUOP = 0;
                 BRANCH = 0;
                 PUSH_SEL = 0;
@@ -83,10 +93,12 @@ module Control(
                 WRITE_REG = 0;
                 WRITE_EN = 0;
                 WRITE_MEM = 0;
+                MEM_ADDR_SEL = 1'bx;
+                REG_ZERO = 0;
                 HALT = 0;
         end
 
-        5:      begin
+        5:      begin //push imm
                 ALUOP = 0;
                 BRANCH = 0;
                 PUSH_SEL = 1;
@@ -97,10 +109,12 @@ module Control(
                 WRITE_REG = 1;
                 WRITE_EN = 1;
                 WRITE_MEM = 0;
+                MEM_ADDR_SEL = 1'bx;
+                REG_ZERO = 0;
                 HALT = 0;
         end
 
-        6:      begin
+        6:      begin // pop
                 ALUOP = 0;
                 BRANCH = 0;
                 PUSH_SEL = 0;
@@ -111,11 +125,13 @@ module Control(
                 WRITE_REG = 0;
                 WRITE_EN = 0;
                 WRITE_MEM = 0;
+                MEM_ADDR_SEL = 1'bx;
+                REG_ZERO = 0;
                 HALT = 0;
         end
 
 
-        7:      begin
+        7:      begin // blt
                 ALUOP = 1;
                 BRANCH = 1;
                 PUSH_SEL = 0;
@@ -126,25 +142,29 @@ module Control(
                 WRITE_REG = 0;
                 WRITE_EN = 0;
                 WRITE_MEM = 0;
+                MEM_ADDR_SEL = 1'bx;
+                REG_ZERO = 0;
                 HALT = 0;
         end
 
-        8:      begin
+        8:      begin // inc
                 ALUOP = 2;
                 BRANCH = 0;
-                PUSH_SEL = 3;
-                PUSH_TOP = 1;
+                PUSH_SEL = 2;
+                PUSH_TOP = 0;
                 PUSH_PEN = 0;
                 POP_TOP = 0;
                 POP_PEN = 0;
                 WRITE_REG = 2;
                 WRITE_EN = 1;
                 WRITE_MEM = 0;
+                MEM_ADDR_SEL = 1'bx;
+                REG_ZERO = 0;
                 HALT = 0;
         end
 
 
-        9:      begin
+        9:      begin // & and shift
                 ALUOP = 3;
                 BRANCH = 0;
                 PUSH_SEL = 3;
@@ -155,11 +175,13 @@ module Control(
                 WRITE_REG = 0;
                 WRITE_EN = 0;
                 WRITE_MEM = 0;
+                MEM_ADDR_SEL = 1'bx;
+                REG_ZERO = 0;
                 HALT = 0;
         end
 
 
-        10:     begin
+        10:     begin // add overflow
                 ALUOP = 4;
                 BRANCH = 0;
                 PUSH_SEL = 0;
@@ -170,11 +192,13 @@ module Control(
                 WRITE_REG = 2;
                 WRITE_EN = 1;
                 WRITE_MEM = 0;
+                MEM_ADDR_SEL = 1'bx;
+                REG_ZERO = 0;
                 HALT = 0;
         end
 
 
-        11:     begin
+        11:     begin // contains
                 ALUOP = 5;
                 BRANCH = 1;
                 PUSH_SEL = 0;
@@ -185,11 +209,13 @@ module Control(
                 WRITE_REG = 0;
                 WRITE_EN = 0;
                 WRITE_MEM = 0;
+                MEM_ADDR_SEL = 1'bx;
+                REG_ZERO = 0;
                 HALT = 0;
         end
 
 
-        12:     begin
+        12:     begin // sub
                 ALUOP = 6;
                 BRANCH = 0;
                 PUSH_SEL = 0;
@@ -200,11 +226,13 @@ module Control(
                 WRITE_REG = 2;
                 WRITE_EN = 1;
                 WRITE_MEM = 0;
+                MEM_ADDR_SEL = 1'bx;
+                REG_ZERO = 0;
                 HALT = 0;
         end
 
 
-        13:     begin
+        13:     begin // abs
                 ALUOP = 7;
                 BRANCH = 0;
                 PUSH_SEL = 3;
@@ -215,10 +243,12 @@ module Control(
                 WRITE_REG = 2;
                 WRITE_EN = 1;
                 WRITE_MEM = 0;
+                MEM_ADDR_SEL = 1'bx;
+                REG_ZERO = 0;
                 HALT = 0;
         end
 
-        14:     begin
+        14:     begin // half
                 ALUOP = 0;
                 BRANCH = 0;
                 PUSH_SEL = 0;
@@ -229,10 +259,12 @@ module Control(
                 WRITE_REG = 0;
                 WRITE_EN = 0;
                 WRITE_MEM = 0;
+                MEM_ADDR_SEL = 1'bx;
+                REG_ZERO = 0;
                 HALT = 1;
         end
 
-        default:begin
+        default:begin // tbd
                 ALUOP = 0;
                 BRANCH = 0;
                 PUSH_SEL = 0;
@@ -243,6 +275,8 @@ module Control(
                 WRITE_REG = 0;
                 WRITE_EN = 0;
                 WRITE_MEM = 0;
+                MEM_ADDR_SEL = 1'bx;
+                REG_ZERO = 0;
                 HALT = 0;
         end
 
