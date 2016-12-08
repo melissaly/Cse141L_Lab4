@@ -1,10 +1,10 @@
-`timescale 1ns / 1ps
-
 module TopLevelCpu(
         input       start,
         input       clk,
         output      halt
         );
+
+	logic [15:0] InstCounter;
 
         // controls
         wire [2:0] ALUOP;
@@ -14,7 +14,7 @@ module TopLevelCpu(
         bit        PUSH_PEN;
         bit        POP_TOP;
         bit        POP_PEN;
-        bit        WRITE_REG;
+        bit  [1:0] WRITE_REG;
         bit        WRITE_EN;
         bit        WRITE_MEM;
         bit	   MEM_ADDR_SEL;
@@ -35,7 +35,7 @@ module TopLevelCpu(
         wire [7:0] reg_mux;
         wire [7:0] top_mux;
         wire [7:0] address_mux;
-        wire [5:0] address_rom;
+        wire [7:0] address_rom;
         wire [7:0] top_mem;
 
         // program counter and instructions
@@ -124,10 +124,14 @@ module TopLevelCpu(
 
         Stack stack(
         .clk(clk),
-        .push_top(top_mux),
-        .push_pen(pen_alu),
-        .topVal(top_stack),
-        .penVal(pen_stack)
+	.push_top(PUSH_TOP),
+	.push_pen(PUSH_PEN),
+	.pop_top(POP_TOP),
+	.pop_pen(POP_PEN),
+        .push_top_val(top_mux),
+        .push_pen_val(pen_alu),
+        .top_val(top_stack),
+        .pen_val(pen_stack)
         );
         
         DataRam memory(
@@ -142,6 +146,13 @@ module TopLevelCpu(
         .immediate(next_instr[4:0]),
         .address(address_rom)
         );
-        
+   	
+	assign halt = 0;
+
+	always_ff@(posedge clk)
+	if(start == 1)
+	InstCounter <= 0;
+	else if(halt == 0)
+	InstCounter <= InstCounter + 1;
 
 endmodule
