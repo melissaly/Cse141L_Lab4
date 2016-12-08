@@ -1,14 +1,13 @@
-
 module RegisterFile ( // in: clk, write_en, addr, data_in; out: data_out, regZero
 	input                clk, write_en,
-	input        [7:0] addr,
-	input        [3:0] data_in,
-	output       [3:0] data_out,
-	output logic [3:0] reg_zero
+	input        [4:0] addr,
+	input        [7:0] data_in,
+	output       [7:0] data_out,
+	output logic [7:0] reg_zero
 	);
 
 	//8 bits wide and 16 registers
-	logic [3:0] registers[2**8];
+	logic [7:0] registers[2**5];
 	
 	
 	//combinational reads
