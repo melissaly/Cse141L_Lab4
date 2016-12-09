@@ -16,11 +16,11 @@ bit temp_push_en;
 
 always_ff @ (posedge clk) begin
     
-    temp_push_en = (r0 == 5'b00000) ? 1 : push_top;
+    temp_push_en = (r0 == 5'b00000) ? 1'b1 : push_top;
     // case: push both
     if(temp_push_en && push_pen) begin
-        ptr_pen <= ptr_pen + 2;
-        ptr_top <= ptr_top + 2;
+        ptr_pen = ptr_pen + 2;
+        ptr_top = ptr_top + 2;
 
         stacks[ptr_pen] = push_pen_val;
         stacks[ptr_top] = push_top_val;
@@ -32,8 +32,8 @@ always_ff @ (posedge clk) begin
 
     // case: push top only
     if(temp_push_en && !push_pen) begin
-        ptr_pen <= ptr_pen + 1;
-        ptr_top <= ptr_top + 1;
+        ptr_pen = ptr_pen + 1;
+        ptr_top = ptr_top + 1;
 
         stacks[ptr_pen] = push_pen_val;
         stacks[ptr_top] = push_top_val;
@@ -45,8 +45,8 @@ always_ff @ (posedge clk) begin
 
     // case: pop both
     if(pop_top && pop_pen) begin
-        temp_top_val <= stacks[ptr_top];
-        temp_pen_val <= stacks[ptr_pen];
+        temp_top_val = stacks[ptr_top];
+        temp_pen_val = stacks[ptr_pen];
 
         ptr_pen = ptr_pen - 2;
         ptr_top = ptr_top - 2;
@@ -55,8 +55,8 @@ always_ff @ (posedge clk) begin
 
     // case: pop top only
     if(pop_top && !pop_pen) begin
-        temp_top_val <= stacks[ptr_top];
-        temp_pen_val <= stacks[ptr_pen];
+        temp_top_val = stacks[ptr_top];
+        temp_pen_val = stacks[ptr_pen];
 
         ptr_pen = ptr_pen - 2;
         ptr_top = ptr_top - 2;

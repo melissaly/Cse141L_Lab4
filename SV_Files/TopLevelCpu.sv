@@ -151,6 +151,6 @@ module TopLevelCpu(
 	if(start == 1)
 	InstCounter <= 0;
 	else if(halt == 0)
-	InstCounter <= InstCounter + 1;
+	InstCounter <= InstCounter + 4'h0001;
 
 endmodule
