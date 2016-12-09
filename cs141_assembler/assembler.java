@@ -21,11 +21,11 @@ public class assembler {
 		try {
 			String line;
 
-			br = new BufferedReader(new FileReader("multiplier.txt"));
+			br = new BufferedReader(new FileReader("closestPair.txt"));
 			String mach = "";
 			BufferedWriter bw = null;
 			try {
-				File file = new File("lab17.txt");
+				File file = new File("lab19.txt");
 				if(!file.exists())
 					file.createNewFile();
 				FileWriter fw = new FileWriter(file);
@@ -76,7 +76,7 @@ public class assembler {
 						}
 
 						if(mach.equals("1110"))
-							mach += "_11111";
+							mach += "11111";
 						else if(mach.equals("0000")) {
 							//String args = line.substring(line.indexOf(' ')+1,line.substring(line.indexof(' ') + );
 							String pattern = "[^\\d]+";
@@ -88,33 +88,33 @@ public class assembler {
 							//System.out.println(result);
 							//result = result.substring(0,result.indexOf(' '));
 							if(result.equals("1"))
-								mach += "_" + "00000";
+								mach += "00000";
 							else if(result.equals("2"))
-								mach += "_" + "00001";
+								mach += "00001";
 							else if(result.equals("3"))
-								mach += "_" + "00010";
+								mach += "00010";
 							else if(result.equals("4"))
-								mach += "_" + "00011";
+								mach += "00011";
 							else if(result.equals("5"))
-								mach += "_" + "00100";
+								mach += "00100";
 							else if(result.equals("6"))
-								mach += "_" + "00101";
+								mach += "00101";
 							else if(result.equals("7"))
-								mach += "_" + "00110";
+								mach += "00110";
 							else if(result.equals("19"))
-								mach += "_" + "00111";
+								mach += "00111";
 							else if(result.equals("20"))
-								mach += "_" + "01000";
+								mach += "01000";
 							else if(result.equals("32"))
-								mach += "_" + "01001";
+								mach += "01001";
 							else if(result.equals("64"))
-								mach += "_" + "01010";
+								mach += "01010";
 							else if(result.equals("127"))
-								mach += "_" + "01011";
+								mach += "01011";
 							else if(result.equals("128"))
-								mach += "_" + "01100";
+								mach += "01100";
 							else if(result.equals("255"))
-								mach += "_" + "01101";
+								mach += "01101";
 							else {
 								System.out.println("Invalid immediate");
 								return;
@@ -131,29 +131,29 @@ public class assembler {
 							int resultInt = Integer.parseInt(result);
 							result = Integer.toBinaryString(resultInt);
 							result = String.format("%5s", result).replace(' ', '0');
-							mach += "_" + result;
+							mach += "" + result;
 						}
 						else if(mach.equals("0111") || mach.equals("1011")) {
 							if(line.contains("A*B"))
-								mach += "_" + "00000";
+								mach += "00000";
 							else if(line.contains("lowerAB*C"))
-								mach += "_" + "00001";
+								mach += "00001";
 							else if(line.contains("upperAB*C"))
-								mach += "_" + "00010";
+								mach += "00010";
 							else if(line.contains(" loop"))
-								mach += "_" + "00011";
+								mach += "00011";
 							else if(line.contains("next"))
-								mach += "_" + "00100";
+								mach += "00100";
 							else if(line.contains("incj"))
-								mach += "_" + "00101";
+								mach += "00101";
 							else if(line.contains("incarray"))
-								mach += "_" + "00110";
+								mach += "00110";
 							else if(line.contains("endinner"))
-								mach += "_" + "00111";
+								mach += "00111";
 							else if(line.contains("innerloop"))
-								mach += "_" + "01000";
+								mach += "01000";
 							else if(line.contains("outerloop"))
-								mach += "_" + "01001";
+								mach += "01001";
 
 						}
 						else {
@@ -172,7 +172,7 @@ public class assembler {
 							int resultInt = Integer.parseInt(result);
 							result = Integer.toBinaryString(resultInt);
 							result = String.format("%5s", result).replace(' ', '0');
-							mach += "_" + result;
+							mach += "" + result;
 						}
 						bw.write(mach + "\n");
 					}
