@@ -16,6 +16,7 @@ module Control(
         );
 
         always_comb begin
+        $display("Opcode: %d", OPCODE);
         case(OPCODE)
         0:      begin // set memory ptr
                 ALUOP = 0;
@@ -248,7 +249,7 @@ module Control(
                 HALT = 0;
         end
 
-        14:     begin // half
+        14:     begin // halt
                 ALUOP = 0;
                 BRANCH = 0;
                 PUSH_SEL = 0;

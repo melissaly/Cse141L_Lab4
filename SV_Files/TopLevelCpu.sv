@@ -4,7 +4,7 @@ module TopLevelCpu(
         output      halt
         );
 
-	logic [15:0] InstCounter;
+        logic [15:0] InstCounter;
 
         // controls
         wire [2:0] ALUOP;
@@ -17,35 +17,37 @@ module TopLevelCpu(
         bit  [1:0] WRITE_REG;
         bit        WRITE_EN;
         bit        WRITE_MEM;
-        bit	   MEM_ADDR_SEL;
+        bit        MEM_ADDR_SEL;
         bit        REG_ZERO;
         bit        HALT;
 
         // module connections
         // description_origin
-        wire [7:0] reg_reg;
-        wire [4:0] reg_instr;
-        wire [7:0] top_stack;
-        wire [7:0] pen_stack;
-        wire [7:0] reg_alu;
-        wire [7:0] top_alu;
-        wire [7:0] pen_alu;
-        bit        branch_alu;
-        wire [7:0] r0_reg;
-        wire [7:0] reg_mux;
-        wire [7:0] top_mux;
-        wire [7:0] address_mux;
-        wire [7:0] address_rom;
-        wire [7:0] top_mem;
+        reg [7:0] reg_reg;
+        reg [4:0] reg_instr;
+        reg [7:0] top_stack;
+        reg [7:0] pen_stack;
+        reg [7:0] reg_alu;
+        reg [7:0] top_alu;
+        reg [7:0] pen_alu;
+        bit       branch_alu;
+        reg [7:0] r0_reg;
+        reg [7:0] reg_mux;
+        reg [7:0] top_mux;
+        reg [7:0] address_mux;
+        reg [7:0] address_rom;
+        reg [7:0] top_mem;
 
         // program counter and instructions
-        wire [8:0] next_instr;
-        wire [8:0] jump_adr;
-        wire [7:0] next_pc;
+        reg [8:0] next_instr;
+        reg [8:0] jump_adr;
+        reg [7:0] next_pc;
+        bit temp_branch;
 
-	/*~ muxes ~*/
-	// register address
-	assign reg_instr =   (REG_ZERO) ? 5'b00000 : next_instr[4:0];
+        always_comb begin
+        /*~ muxes ~*/
+        // register address
+        assign reg_instr =   (REG_ZERO) ? 5'b00000 : next_instr[4:0];
 
         // memory address
         assign address_mux = (MEM_ADDR_SEL) ? r0_reg : address_rom;
@@ -63,8 +65,8 @@ module TopLevelCpu(
                               8'bx;
 
         // branch and-gate
-        bit temp_branch;
         assign temp_branch = BRANCH && branch_alu;
+        end
         
         
         ProgramCounter pc(
@@ -85,7 +87,7 @@ module TopLevelCpu(
         .OPCODE(next_instr[8:5]),
         .ALUOP(ALUOP), 
         .BRANCH(BRANCH),
-	.PUSH_SEL(PUSH_SEL),
+        .PUSH_SEL(PUSH_SEL),
         .PUSH_TOP(PUSH_TOP),
         .PUSH_PEN(PUSH_PEN),
         .POP_TOP(POP_TOP),
@@ -93,7 +95,7 @@ module TopLevelCpu(
         .WRITE_REG(WRITE_REG),
         .WRITE_EN(WRITE_EN),
         .WRITE_MEM(WRITE_MEM),
-	.MEM_ADDR_SEL(MEM_ADDR_SEL),
+        .MEM_ADDR_SEL(MEM_ADDR_SEL),
         .REG_ZERO(REG_ZERO),
         .HALT(HALT)
         );
@@ -121,10 +123,10 @@ module TopLevelCpu(
 
         Stack stack(
         .clk(clk),
-	.push_top(PUSH_TOP),
-	.push_pen(PUSH_PEN),
-	.pop_top(POP_TOP),
-	.pop_pen(POP_PEN),
+        .push_top(PUSH_TOP),
+        .push_pen(PUSH_PEN),
+        .pop_top(POP_TOP),
+        .pop_pen(POP_PEN),
         .push_top_val(top_mux),
         .push_pen_val(pen_alu),
         .r0(next_instr[4:0]),
@@ -144,13 +146,14 @@ module TopLevelCpu(
         .immediate(next_instr[4:0]),
         .address(address_rom)
         );
-   	
-	assign halt = 0;
+           
+        assign halt = 0;
 
-	always_ff@(posedge clk)
-	if(start == 1)
-	InstCounter <= 0;
-	else if(halt == 0)
-	InstCounter <= InstCounter + 4'h0001;
+        always_ff@(posedge clk) begin
+            if(start == 1)
+                InstCounter <= 0;
+            else if(halt == 0)
+                InstCounter <= InstCounter + 4'h1;
+        end
 
 endmodule

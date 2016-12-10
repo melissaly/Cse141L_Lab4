@@ -5,12 +5,12 @@ module TopLevel_tb;
 
 // Outputs
 	wire halt;
-
+        wire out;
 	// Instantiate the Unit Under Test (UUT)
 	TopLevelCpu uut (
         .start(start), 
         .clk(clk), 
-        .halt(halt)       
+        .halt(halt)  
 	);
 
 	initial begin

@@ -14,7 +14,9 @@ module InstructionRom( // in: pc, out: instr
         //$readmemb("lab19.txt",ROM_core);
     always_comb begin
         // retrieve instruction given address
-        instr = ROM_core[pc];  
+        instr = ROM_core[pc];
+        $display("");
+        $display("Instruction: %b", instr);
     end
 
 endmodule
