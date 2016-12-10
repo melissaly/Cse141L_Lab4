@@ -1,7 +1,0 @@
-Create all the muxes
-    r0 for instruction 0
-    reg file write data 
-    memory address selector
-    stack top
-Map memory to their hash keys
-Run program
